@@ -1,10 +1,12 @@
-## Máquinas de Turing: Multiplicación en Unario y Conversión a Binario
+# **Máquina de Turing para la Multiplicación Unaria**
 
-A continuación, se presentará una Máquina de Turing que realiza la multiplicación de dos números en representación unaria y luego convierte el resultado a binario.
+Se presenta una Máquina de Turing que realiza la multiplicación de dos números en representación unaria.
 
 - **Nombre**: "Máquina de Turing para la Multiplicación Unaria"
-- **Función que computa**: La máquina toma dos números en unario, representados por secuencias de 1s separadas por #, y calcula su producto en representación unaria
-  Por ejemplo:
+- **Función que computa**:  
+  La máquina toma dos números en unario, representados por secuencias de `1`s separadas por `#`, y calcula su producto en representación unaria.
+
+**Ejemplos:**
 
 | Entrada (unaria) | Salida (unaria) |
 | ---------------- | --------------- |
@@ -12,13 +14,42 @@ A continuación, se presentará una Máquina de Turing que realiza la multiplica
 | 11#11 (2×2)      | 1111 (4)        |
 | 111#111 (3×3)    | 111111111 (9)   |
 
-**Descripción y estrategia**: La entrada consta de dos números en unario separados por #.
+## **Descripción y estrategia mejorada**
 
-Copia del Primer Factor: Se recorren los 1s del primer factor y se duplican en la posición correspondiente para cada 1 del segundo factor.
+La máquina de Turing realiza la multiplicación de dos números representados en **notación unaria**. Cada número está formado por una secuencia de `1`s y está separado por el símbolo `#`. El objetivo es calcular el producto de estos dos números y escribir el resultado en la cinta, utilizando también notación unaria.
 
-Marcado y Reubicación: Se usa el símbolo X para marcar las operaciones intermedias y el símbolo C para gestionar el cómputo.
+### **Estrategia general**
 
-Resultado Final: Se construye la salida en el mismo espacio de la cinta y se eliminan los símbolos auxiliares.
+1. **Identificación de los factores**
+
+   - Se escanea la entrada para localizar los dos operandos, identificando el primer número antes del `#` y el segundo después de este.
+
+2. **Copia del primer operando**
+
+   - Se recorre el primer operando (`n` cantidad de `1`s) y, por cada `1` encontrado, se inicia un proceso de copia del primer operando `m` veces, donde `m` es la cantidad de `1`s en el segundo operando.
+
+3. **Uso de marcadores auxiliares (`X` y `C`)**
+
+   - `X`: Se usa temporalmente para marcar los `1`s procesados y evitar contarlos nuevamente.
+   - `C`: Se usa para indicar la finalización del proceso de copiado de un grupo de `1`s.
+
+4. **Construcción del resultado**
+
+   - Los `1`s copiados se reubican al final de la cinta, representando la multiplicación.
+   - Se eliminan los marcadores auxiliares y cualquier otro carácter sobrante.
+
+5. **Finalización y limpieza**
+   - Una vez terminado el proceso de multiplicación, la máquina vuelve a su estado final y detiene la ejecución, dejando únicamente la respuesta en unario en la cinta.
+
+### **Ejemplo de ejecución**
+
+Para la entrada `111#11` (3 × 2):
+
+1. Se reconoce `111` como el primer operando (`n = 3`) y `11` como el segundo (`m = 2`).
+2. Se recorre `111`, y por cada `1` encontrado, se copia `111` nuevamente en la cinta.
+3. Se eliminan los símbolos auxiliares, dejando `111111` como resultado (6 en unario).
+
+Este enfoque garantiza que el resultado refleje correctamente la operación de multiplicación en un sistema de numeración sin ceros, basado únicamente en la cantidad de `1`s.
 
 - **Formalismo**: MT = < Г, Σ, b, Q, q_0, F, δ>
 
@@ -125,47 +156,58 @@ Resultado Final: Se construye la salida en el mismo espacio de la cinta y se eli
     - δ(q35, X) = (q35, X, L)
       }
 
-**Conversión del Resultado Unario a Binario**
-
-Una vez obtenida la multiplicación en unario, se aplica la conversión a binario utilizando el método de divisiones sucesivas por 2, similar al procedimiento descrito en la primera máquina.
-
-**Conversión del Resultado Unario a Binario**
-
-| Unario (Resultado de Multiplicación) | binario |
-| ------------------------------------ | ------- |
-| 1                                    | 0       |
-| 11                                   | 1       |
-| 111                                  | 2       |
-| 1111                                 | 3       |
-| 11111                                | 4       |
-| 111111                               | 5       |
-| 1111111                              | 6       |
-| 11111111                             | 7       |
-| 111111111                            | 8       |
-
 - **Diseño en JFlap**: ![Diseño JFlap](./resources/jflap.png)
 - **Comprobaciones**:
   ![picture 0](./resources/comprobaciones.png)
 - **Programa Simulator**: [Programa Simulator](http://turingmachinesimulator.com/shared/vitfcuxush)
 - **Programa Prolog**: [Programa Prolog](./resources/multiplicacion_unario.pl)
 
-- **Complejidad temporal**: 𝑂(𝑛), exprésado en términos de 𝑛 = 4 + 19 transiciones (máximo)
-- **Complejidad espacial**: Si esta máquina de Turing utiliza 𝑛 = 3 + 4 celdas, entonces la complejidad espacial es 𝑂(𝑛)
+# **Cálculo de Complejidades en la Máquina de Turing**
+
+Se evalúa la complejidad **espacial** y **temporal** de la máquina de Turing utilizando datos de entrada. A partir de estos, se pueden obtener fórmulas matemáticas que describen su comportamiento.
 
 ### Complejidad Espacial
 
-La máquina de Turing requiere un espacio proporcional a la longitud de la entrada y del resultado. Dado que la multiplicación en unario produce una salida de tamaño m × n para entradas de tamaño m y n, la complejidad espacial es:
+Para los casos base usamos la siguientes formulas:
 
-O(m × n).
+- S(n,m) = { si (n = 0 ∨ n = 1 ) -> m + 4}
+- S(n,m) = { si n > 0 ∧ (m = 0 ∨ m=1 ) -> n + 5 }
+
+Y para el caso de multiplicacion donde n es mayor a 1 y m es mayor a 1:
+
+- S(n,m) ={ si n,m >1 ∧ n\*m }
 
 ### Complejidad Temporal
 
-El tiempo de ejecución depende de los pasos requeridos para replicar el primer operando tantas veces como indique el segundo operando y limpiar la cinta. Cada 1 en el primer operando debe procesarse por cada 1 en el segundo operando, por lo que el número de transiciones es proporcional a la multiplicación.
+La complejidad temporal para esta máquina solo se puede calcular de forma exacta cuando _n_ o _m_ valen 0(1u) o 1(11u)
 
-O(m × n) en la peor caso.
+Cuando _n_ y _m_ son mayores a 1 no se puede calcular de forma exacta la cantidad de pasos que le toma la maquina de Turing computar ya que es alealtoria
 
-La conversión de unario a binario, basada en divisiones sucesivas, tiene una complejidad de O(log(m × n)).
+- **CAS0 base “n=0”**
 
-### Conclusión
+  - T(n,m) = { si n = 0 -> (2\*m)+5 }
 
-Esta máquina de Turing implementa la multiplicación unaria de manera eficiente dentro del marco de máquinas de Turing, aunque la representación unaria hace que el crecimiento del tamaño de la salida sea exponencial en comparación con la representación binaria. La conversión final a binario permite un almacenamiento más compacto y un procesamiento más eficiente en etapas posteriores.
+- **CAS0 base “n=1”**
+
+  - T(n,m) = { si n = 1 -> 7}
+
+- **CAS0 base “ n > 1 ∧ m=0”**
+
+  - T(n,m) = { si n >1 ∧ m=0 -> 2\*n +6}
+
+- **CAS0 base “ n > 1 ∧ m=1”**
+
+  - T(n,m) = { si n >1 ∧ m=1 -> 2\*n + 9}
+
+- **CAS0S donde “ n , m > 1”**
+
+Para estos casos el incremento de los pasos es alealtorio, no sigue un orden lineal
+
+| Multiplicación unaria | Pasos (tiempo) |
+| --------------------- | -------------- |
+| 111x111               | 45             |
+| 111#1111              | 61             |
+| 111#11111             | 81             |
+| 1111#111              | 78             |
+| 1111#1111             | 116            |
+| 1111#11111            | 166            |
