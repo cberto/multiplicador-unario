@@ -18,9 +18,9 @@ La máquina toma dos números en notación unaria, representados por secuencias 
 
 | Entrada (unaria) | Salida (unaria) |
 | ---------------- | --------------- |
-| 111#11 (3×2)     | 111111 (6)      |
-| 11#11 (2×2)      | 1111 (4)        |
-| 111#111 (3×3)    | 111111111 (9)   |
+| 1111#111 (3×2)     | 1111111 (6)      |
+| 111#111 (2×2)      | 11111 (4)        |
+| 1111#1111 (3×3)    | 1111111111 (9)   |
 
 ## **Descripción y estrategia mejorada**
 
